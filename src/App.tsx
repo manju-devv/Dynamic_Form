@@ -1,26 +1,73 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import JsonEditor from "./components/JsonEditor";
+import FormGenerator from "./components/FormGenerator";
 
-function App() {
+const App = () => {
+  const [schema, setSchema] = useState<any>({
+    fields: [
+      {
+        id: "name",
+        type: "text",
+        label: "Name",
+        required: true,
+        placeholder: "Enter your name",
+      },
+      {
+        id: "email",
+        type: "email",
+        label: "Email",
+        required: true,
+        placeholder: "Enter your email",
+      },
+      {
+        id: "password",
+        type: "password",
+        label: "Password",
+        required: true,
+        placeholder: "Enter your password",
+      },
+      {
+        id: "gender",
+        type: "radio",
+        label: "Gender",
+        required: true,
+        options: [
+          { value: "male", label: "Male" },
+          { value: "female", label: "Female" },
+        ],
+      },
+      {
+        id: "role",
+        type: "select",
+        label: "Role",
+        required: true,
+        options: [
+          { value: "admin", label: "Admin" },
+          { value: "user", label: "User" },
+          { value: "guest", label: "Guest" },
+        ],
+      },
+    ],
+  });
+
+  const [formData, setFormData] = useState<any>({});
+
+  const handleFormSubmit = (data: any) => {
+    setFormData(data); 
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex flex-col lg:flex-row h-screen">
+      <div className="w-full lg:w-1/2 p-4">
+        <h2 className="text-xl font-bold mb-4">JSON Editor</h2>
+        <JsonEditor schema={schema} formData={formData} onSchemaChange={setSchema} />
+      </div>
+      <div className="w-full lg:w-1/2 p-4">
+        <h2 className="text-xl font-bold mb-4">Generated Form</h2>
+        <FormGenerator schema={schema} onSubmit={handleFormSubmit} />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
